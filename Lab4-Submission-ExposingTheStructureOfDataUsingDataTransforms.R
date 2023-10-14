@@ -302,3 +302,44 @@ dim(student_performance_dataset_pca_dr)
 
 student_performance_dataset_fe <- princomp(cor(student_performance_dataset[, 98:99]))
 summary(student_performance_dataset_fe)
+
+
+#### Scree Plot ----
+# The Scree Plot shows that the 1st 2 principal components can cumulatively
+# explain 92.8% of the variance, i.e., 87.7% + 5.1% = 92.8%.
+factoextra::fviz_eig(student_performance_dataset_fe, addlabels = TRUE)
+
+student_performance_dataset_fe$loadings[, 1:2]
+
+factoextra::fviz_cos2(student_performance_dataset_fe, choice = "var", axes = 1:2)
+
+#### Biplot and Cos2 Combined Plot ----
+# This can be confirmed using the following visualization.
+
+# Points to note when interpreting the visualization:
+#    (i) All the variables that are grouped together are positively correlated.
+#    (ii) The longer the arrow, the better represented the variable is.
+#    (iii) Variables that are negatively correlated are displayed in the
+#          opposite side of the origin.
+
+factoextra::fviz_pca_var(student_performance_dataset_fe, col.var = "cos2",
+                         gradient.cols = c("red", "orange", "green"),
+                         repel = TRUE)
+
+
+if (!is.element("fastICA", installed.packages()[, 1])) {
+  install.packages("fastICA", dependencies = TRUE)
+}
+require("fastICA")
+
+
+### ICA for Dimensionality Reduction on the Boston Housing Dataset ----
+summary(student_performance_dataset)
+
+model_of_the_transform <- preProcess(student_performance_dataset,
+                                     method = c("scale", "center", "ica"),
+                                     n.comp = 8)
+print(model_of_the_transform)
+student_performance_ica_dr <- predict(model_of_the_transform, student_performance_dataset)
+
+summary(student_performance_ica_dr)
