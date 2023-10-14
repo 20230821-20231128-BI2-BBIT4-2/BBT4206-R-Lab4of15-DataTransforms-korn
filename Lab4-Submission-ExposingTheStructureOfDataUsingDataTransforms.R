@@ -203,8 +203,8 @@ View(student_performance_dataset)
 summary(student_performance_dataset)
 # The code below converts column number 4 into unlisted and numeric data first
 # so that a histogram can be plotted. Further reading:
-student_performance_dataset_absenteeism_percentage <- as.numeric(unlist(student_performance_dataset[, 96]))
-hist(student_performance_dataset_absenteeism_percentage, main = names(student_performance_dataset)[96])
+student_performance_dataset_TOTAL <- as.numeric(unlist(student_performance_dataset[, 99]))
+hist(student_performance_dataset_TOTAL, main = names(student_performance_dataset)[99])
 
 model_of_the_transform <- preProcess(student_performance_dataset, method = c("scale"))
 print(model_of_the_transform)
@@ -212,8 +212,8 @@ student_performance_data_scale_transform <- predict(model_of_the_transform, stud
 
 # AFTER
 summary(student_performance_data_scale_transform)
-student_performance_dataset_absenteeism_percentage <- as.numeric(unlist(student_performance_data_scale_transform[, 96]))
-hist(student_performance_dataset_absenteeism_percentage, main = names(student_performance_data_scale_transform)[96])
+student_performance_dataset_TOTAL <- as.numeric(unlist(student_performance_data_scale_transform[, 99]))
+hist(student_performance_dataset_TOTAL, main = names(student_performance_data_scale_transform)[99])
 
 
 ## STEP 4. Apply a Centre Data Transform ----
@@ -227,7 +227,7 @@ summary(student_performance_data_center_transform)
 ## STEP 5. Apply a Standardize Data Transform ----
 # BEFORE
 summary(student_performance_dataset)
-sapply(student_performance_dataset[, 96], sd)
+sapply(student_performance_dataset[, 99], sd)
 model_of_the_transform <- preProcess(student_performance_dataset,
                                      method = c("scale", "center"))
 print(model_of_the_transform)
@@ -235,7 +235,7 @@ student_perfromance_data_standardize_transform <- predict(model_of_the_transform
 
 # AFTER
 summary(student_perfromance_data_standardize_transform)
-sapply(student_perfromance_data_standardize_transform[, 96], sd)
+sapply(student_perfromance_data_standardize_transform[, 99], sd)
 
 ## STEP 6. Apply a Normalize Data Transform ----
 summary(student_performance_dataset)
@@ -250,8 +250,8 @@ summary(student_perfromance_data_normalize_transform)
 summary(student_perfromance_data_standardize_transform)
 
 # Calculate the skewness before the Box-Cox transform
-sapply(student_perfromance_data_standardize_transform[, 96],  skewness, type = 2)
-sapply(student_perfromance_data_standardize_transform[, 96], sd)
+sapply(student_perfromance_data_standardize_transform[, 99],  skewness, type = 2)
+sapply(student_perfromance_data_standardize_transform[, 99], sd)
 
 model_of_the_transform <- preProcess(student_perfromance_data_standardize_transform,
                                      method = c("BoxCox"))
@@ -260,8 +260,8 @@ student_perfromance_data_box_cox_transform <- predict(model_of_the_transform,
                                        student_perfromance_data_standardize_transform)
 
 # Calculate the skewness after the Box-Cox transform
-sapply(student_perfromance_data_box_cox_transform[, 96],  skewness, type = 2)
-sapply(student_perfromance_data_box_cox_transform[, 96], sd)
+sapply(student_perfromance_data_box_cox_transform[, 99],  skewness, type = 2)
+sapply(student_perfromance_data_box_cox_transform[, 99], sd)
 
 
 ## STEP 8. Apply a Yeo-Johnson Power Transform ----
@@ -269,8 +269,8 @@ sapply(student_perfromance_data_box_cox_transform[, 96], sd)
 summary(student_perfromance_data_standardize_transform)
 
 # Calculate the skewness before the Yeo-Johnson transform
-sapply(student_perfromance_data_standardize_transform[, 96],  skewness, type = 2)
-sapply(student_perfromance_data_standardize_transform[, 96], sd)
+sapply(student_perfromance_data_standardize_transform[, 99],  skewness, type = 2)
+sapply(student_perfromance_data_standardize_transform[, 99], sd)
 
 model_of_the_transform <- preProcess(student_perfromance_data_standardize_transform,
                                      method = c("YeoJohnson"))
@@ -282,8 +282,8 @@ student_perfromance_data_yeo_johnson_transform <- predict(model_of_the_transform
 summary(student_perfromance_data_yeo_johnson_transform)
 
 # Calculate the skewness after the Yeo-Johnson transform
-sapply(student_perfromance_data_yeo_johnson_transform[, 96],  skewness, type = 2)
-sapply(student_perfromance_data_yeo_johnson_transform[, 96], sd)
+sapply(student_perfromance_data_yeo_johnson_transform[, 99],  skewness, type = 2)
+sapply(student_perfromance_data_yeo_johnson_transform[, 99], sd)
 
 
 ## STEP 9.a. PCA Linear Algebra Transform for Dimensionality Reduction ----
@@ -299,5 +299,6 @@ dim(student_performance_dataset_pca_dr)
 
 
 ## STEP 9.b. PCA Linear Algebra Transform for Feature Extraction ----
-student_performance_dataset_fe <- princomp(cor(student_performance_dataset[, 99]))
+
+student_performance_dataset_fe <- princomp(cor(student_performance_dataset[, 98:99]))
 summary(student_performance_dataset_fe)
